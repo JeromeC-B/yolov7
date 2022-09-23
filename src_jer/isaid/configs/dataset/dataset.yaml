@@ -28,6 +28,6 @@ names:
 
 
 # ajout jer
-images_folder: ./images # pour spécifier où sont les images (je ne sais pas si cela va être utile)  # utile pour créer les labels
-split_ratio: 0.8 # définir un meilleur ratio? Selon le nb d'images...
+images_folder: ./train/images # pour spécifier où sont les images (je ne sais pas si cela va être utile)  # utile pour créer les labels
+split_ratio: 0.7 # définir un meilleur ratio? Selon le nb d'images...
 k_fold: 0 # raisonable de penser qu'on peut faire un k-fold? DEFAULT=0, aucun k-fold

@@ -74,6 +74,7 @@ def create_strs_to_file_inst(annots):
 
 
 def write_labels(annots, strs_to_file, path_imgs, path_out):
+    raise Exception("Rendu ici, il faut etre sur que les labels soient 0,0 en haut à gauche, et les pixels normalisés...")
     filename_to_id = {}
     for i in range(len(annots["images"])):
         filename_to_id[annots["images"][i]["file_name"]] = annots["images"][i]["id"]
