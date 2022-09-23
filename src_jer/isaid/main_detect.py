@@ -20,6 +20,10 @@ if __name__ == '__main__':
 
     time_debut = time.time()
 
+    raise Exception("On dirait qu'on est obligé de débugger à partir de detect.py...")
+    import torch
+    a = torch.cuda.is_available()
+
     with open(r"C:\projets\yolov7\src_jer\isaid\configs\detect_config.yaml", 'r') as stream:
         config = yaml.safe_load(stream)
 
@@ -28,8 +32,6 @@ if __name__ == '__main__':
     # sys.argv = [__file__, "--train", "True", "--base", 'configs/latent-diffusion/cin256-v2.yaml', '--debug', 'True', '--default_root_dir',
     #             'C:/projets/latent-diffusion', '--logdir', 'logdir_jer', '--resume_from_checkpoint', 'logdir_jer/cin256-v2/model.ckpt', "--accelerator", "gpu",
     #             "--devices", "0"]
-    t = 0
-    detect.main()
 
 
     detect.run(weights=config["weights"],
