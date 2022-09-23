@@ -23,7 +23,8 @@
 !setup.cfg
 !cfg/yolov3*.cfg
 
-detectron2/ 
+# ajout de jer
+detectron2/
 
 storage.googleapis.com
 runs/*

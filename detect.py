@@ -163,6 +163,33 @@ def detect(save_img=False):
 
 
 if __name__ == '__main__':
+
+    import torch
+    a = torch.cuda.is_available()
+
+    import yaml
+    with open(r"C:\projets\yolov7\src_jer\isaid\configs\detect_config.yaml", 'r') as stream:
+        config = yaml.safe_load(stream)
+
+    import sys
+    import ast
+    sys.argv = [__file__,
+                "--weights", config["weights"],
+                "--source", config["source"],
+                '--img-size', config["img-size"],
+                '--conf-thres', config["conf-thres"],
+                '--iou-thres', config["iou-thres"],
+                '--device', config["device"],
+                "--project", config["project"],
+                '--name', config["name"]]
+
+    for name in ["view-img", "save-txt", "save-conf", "nosave", "agnostic-nms", "augment", "update", "exist-ok", "no-trace"]:
+        if config[name]:
+            sys.argv.append("--" + name)
+    if config["classes"] != "None":
+        sys.argv.append("--" + "classes")
+        sys.argv.append(config["classes"])
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', nargs='+', type=str, default='yolov7.pt', help='model.pt path(s)')
     parser.add_argument('--source', type=str, default='inference/images', help='source')  # file/folder, 0 for webcam
