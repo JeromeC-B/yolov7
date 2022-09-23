@@ -1,5 +1,5 @@
 # config for the detect run function
-weights: C:\projets\yolov7\yolov7s.pt # model.pt path(s)
+weights: C:\projets\yolov7\yolov7.pt # model.pt path(s)
 #weights: C:\projets\external\database\airbus-aircraft-detection\data-2022-09-11\scratch\exp\weights\best.pt # model.pt path(s)
 #source: C:\projets\external\database\isaid\data-2022-09-21\test\sample # file/dir/URL/glob, 0 for webcam
 source: "0" # file/dir/URL/glob, 0 for webcam
