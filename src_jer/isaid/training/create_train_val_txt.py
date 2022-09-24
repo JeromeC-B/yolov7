@@ -46,6 +46,10 @@ def create_train_val_txt(split_ratio, train_name, val_name, path_imgs, path_out)
     imgs_name = get_imgs_name(path_imgs=path_out + "/" + path_imgs)
     # ### doit faire un split
     train_rows, val_rows = split_train_val(split_ratio=split_ratio, nb_data=len(imgs_name))
+
+    print("ICI MODIFICATION DES TRAIN ET VAL ROWS!!!!")
+    train_rows = train_rows[:25]
+    val_rows = val_rows[:25]
     # ### créer les .txt
     create_txt(rows=train_rows, imgs_name=imgs_name, name_file=path_out + "/" + train_name, path_imgs=path_imgs)
     create_txt(rows=val_rows, imgs_name=imgs_name, name_file=path_out + "/" + val_name, path_imgs=path_imgs)

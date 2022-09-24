@@ -21,6 +21,12 @@ from src_jer.isaid.raw_processing import train_n_val, test
 
 
 def check_integrity(path_in):
+    """
+    Intégrité du split train/dev est regardé ici. ET c'est correct. Par contre, dans les annotations, pour un même id, il y a
+    plusieurs string label selon si on est en train ou dev... donc aller voir ./labels.json pour les labels officiels de mon projet
+    :param path_in:
+    :return:
+    """
     t = 0
     names = {}
     annots_tot = {}
@@ -43,6 +49,25 @@ def check_integrity(path_in):
     return annots_tot["train"], annots_tot["val"], names_train_n_val
 
 
+def write_labels_num():
+    """
+    Aller chercher les bons chiffres représentant les targets..
+
+    :return:
+    """
+
+    num_to_label = {}
+    for name in ["train", "val"]:
+        with open(path_in + "iSAID_{}.json".format(name), "r", encoding="utf-8") as f:
+            annots = json.load(f)
+        for annot in annots["annotations"]:
+            if annot["category_id"] in num_to_label:
+                if annot["category_name"] not in num_to_label[annot["category_id"]]:
+                    num_to_label[annot["category_id"]].append(annot["category_name"])
+            else:
+                num_to_label[annot["category_id"]] = [annot["category_name"]]
+
+
 if __name__ == '__main__':
 
     print('début: ', os.path.abspath(__file__))
@@ -55,14 +80,19 @@ if __name__ == '__main__':
     path_out = r"C:\projets\external\database\isaid\data-2022-09-21\data\\"
     which_seg = "inst"  # inst == instance segmentation, sem == semantic segmentation
 
+    with open(path_in + "labels.json", "r", encoding="utf-8") as f:
+        labels = json.load(f)
+
     annots_train, annots_val, names_train_n_val = check_integrity(path_in=path_in)
 
-    train_n_val.move_data_n_labels(annots=annots_train, which_seg=which_seg, path_in=path_in, path_out=path_out + "train/")
-    train_n_val.move_data_n_labels(annots=annots_val, which_seg=which_seg, path_in=path_in, path_out=path_out + "dev/")
+    train_n_val.move_data_n_labels(labels=labels, annots=annots_train, which_seg=which_seg, path_in=path_in, path_out=path_out + "train/")
+    train_n_val.move_data_n_labels(labels=labels, annots=annots_val, which_seg=which_seg, path_in=path_in, path_out=path_out + "dev/")
 
     test.move_data_n_labels(names_train_n_val=names_train_n_val, path_in=path_in + "/images/", path_out=path_out + "test/images/")
 
-    # ### fonction poura ller path/train/imgs vs path/val/imgs ###
+    # ### pu obligatoire, c'était pour aller voir... et effectivment dans train et val json annotations, il y a différents labels pour le même chiffre...
+    # ### voir le labels.json pour les chiffres officiels dans mon projet (ou dataset.yaml)
+    # write_labels_num()
 
     with open(path_out + r"\notes.txt", "w", encoding="utf-8") as f:
         f.write("Le type des labels: {}".format(which_seg))

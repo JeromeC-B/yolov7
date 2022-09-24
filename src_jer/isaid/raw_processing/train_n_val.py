@@ -54,7 +54,7 @@ def create_str_segm(annot_list, x_size, y_size):
     return str_segm
 
 
-def create_strings_instance_labels(annots, path_imgs):
+def create_strings_instance_labels(labels, annots, path_imgs):
     """
     Ne pas oublier la différence entre inst et sem... si c'est inst, alors la même catégorie dans l'image va avoir plusieurs labels...
     du style
@@ -78,7 +78,13 @@ def create_strings_instance_labels(annots, path_imgs):
             else:
                 string_labels[filename] = ""
             str_segm = create_str_segm(annot_list=annot["segmentation"][i], x_size=x_size, y_size=y_size)
-            string_labels[filename] = string_labels[filename] + "{} ".format(annot["category_id"]) + str_segm
+
+            category_id = annot["category_name"].lower().replace(" ", "_")
+            if category_id not in labels:
+                raise Exception("Pas normal...", filename, category_id)
+            else:
+                category_id = labels[category_id]
+            string_labels[filename] = string_labels[filename] + "{} ".format(category_id) + str_segm
     return string_labels
 
 
@@ -93,12 +99,12 @@ def write_labels(string_labels, path_out):
             f.write(string_labels[filename])
 
 
-def create_labels_in_out_folder(annots, which_seg, path_imgs, path_out):
+def create_labels_in_out_folder(labels, annots, which_seg, path_imgs, path_out):
 
     Path(path_out).mkdir(parents=True, exist_ok=True)
 
     if which_seg == "inst":
-        string_labels = create_strings_instance_labels(annots=annots, path_imgs=path_imgs)
+        string_labels = create_strings_instance_labels(labels=labels, annots=annots, path_imgs=path_imgs)
     elif which_seg == "sem":
         raise Exception("Pas encore implémenté")
         path_in = path_in + "/train-labels/train/Semantic_masks/images/images"
@@ -108,8 +114,8 @@ def create_labels_in_out_folder(annots, which_seg, path_imgs, path_out):
     write_labels(string_labels=string_labels, path_out=path_out)
 
 
-def move_data_n_labels(annots, which_seg, path_in, path_out):
+def move_data_n_labels(labels, annots, which_seg, path_in, path_out):
 
     copy_data(annots=annots, path_in=path_in, path_out=path_out)
 
-    create_labels_in_out_folder(annots=annots, which_seg=which_seg, path_imgs=path_out + "/images/", path_out=path_out + "/labels/")
+    create_labels_in_out_folder(labels=labels, annots=annots, which_seg=which_seg, path_imgs=path_out + "/images/", path_out=path_out + "/labels/")

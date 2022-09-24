@@ -13,6 +13,9 @@ import ast
 import seg.segment.train as train
 from src_jer.isaid.training import create_train_val_txt
 
+
+# ### pour régler MP: Error #15: Initializing libiomp5md.dll, but found libiomp5md.dll already initialized.
+os.environ['KMP_DUPLICATE_LIB_OK']='True'
 if __name__ == '__main__':
 
     print('début: ', os.path.abspath(__file__))

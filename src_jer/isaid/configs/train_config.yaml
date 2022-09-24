@@ -1,10 +1,10 @@
 # config for the train run function
-#weights: "" # type=str, default=ROOT / 'yolov5s.pt', help='initial weights path, "" if from scratch')
-weights: C:\projets\yolov7\yolov7-seg.pt  # type=str, default=ROOT / 'yolov5s.pt', help='initial weights path, "" if from scratch')
-cfg: C:\projets\yolov7\seg\models\segment\yolov7-seg.yaml # type=str, default='', help='model.yaml path')
+weights: "" # type=str, default=ROOT / 'yolov5s.pt', help='initial weights path, "" if from scratch')
+#weights: C:\projets\yolov7\yolov7-seg.pt  # type=str, default=ROOT / 'yolov5s.pt', help='initial weights path, "" if from scratch')
+cfg: C:\projets\yolov7\seg\models\segment\yolov7-seg-jer.yaml # type=str, default='', help='model.yaml path')
 data: C:\projets\yolov7\src_jer\isaid\configs\dataset\dataset.yaml # type=str, default=ROOT / 'data/coco128.yaml', help='dataset.yaml path')
 hyp: C:\projets\yolov7\src_jer\isaid\configs\hyps\hyp.scratch-low-jer.yaml # type=str, default=ROOT / 'data/hyps/hyp.scratch-low.yaml', help='hyperparameters path')
-epochs: 2 # type=int, default=300, help='total training epochs')
+epochs: 3 # type=int, default=300, help='total training epochs')
 batch_size: 2 # type=int, default=16, help='total batch size for all GPUs, -1 for autobatch')
 imgsz: 640 # type=int, default=640, help='train, val image size (pixels)')
 rect: False # action='store_true', help='rectangular training') ## JE PENSE QUE rect == False pour train loader, et par defautl pour val loader == True.. voir dans code
@@ -23,7 +23,7 @@ single_cls: False # action='store_true', help='train multi-class data as single-
 optimizer: SGD # type=str, choices=['SGD', 'Adam', 'AdamW'], default='SGD', help='optimizer') DEFAULT=SGD   (VENIR JOUER AVEC CE PARAM)
 sync_bn: False # action='store_true', help='use SyncBatchNorm, only available in DDP mode') DEFAULT=False
 workers: 1 # type=int, default=8, help='max dataloader workers (per RANK in DDP mode)') DEFAULT=8
-project: C:\projets\external\database\isaid\data-2022-09-21\finetuned\ # default=ROOT / 'runs/train', help='save to project/name')
+project: C:\projets\external\database\isaid\data-2022-09-21\scratch\ # default=ROOT / 'runs/train', help='save to project/name')
 name: exp # default='exp', help='save to project/name')
 exist_ok: False # action='store_true', help='existing project/name ok, do not increment') DEFAULT=False
 quad: False # action='store_true', help='quad dataloader') DEFAULT=False

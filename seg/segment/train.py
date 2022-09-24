@@ -154,7 +154,8 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
         # loggers.on_params_update({"batch_size": batch_size})
 
     # Optimizer
-    nbs = 64  # nominal batch size
+    print("Changement de nbs ici de 64 à X")
+    nbs = 2  # nominal batch size  DEFAULT=64
     accumulate = max(round(nbs / batch_size), 1)  # accumulate loss before optimizing
     hyp['weight_decay'] *= batch_size * accumulate / nbs  # scale weight_decay
     optimizer = smart_optimizer(model, opt.optimizer, hyp['lr0'], hyp['momentum'], hyp['weight_decay'])
@@ -370,8 +371,9 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
             ema.update_attr(model, include=['yaml', 'nc', 'hyp', 'names', 'stride', 'class_weights'])
             final_epoch = (epoch + 1 == epochs) or stopper.possible_stop
             if not noval or final_epoch:  # Calculate mAP
+                print("Modification the la batch_size de la val: batch_size // WORLD_SIZE * 2 à batch_size")
                 results, maps, _ = validate.run(data_dict,
-                                                batch_size=batch_size // WORLD_SIZE * 2,
+                                                batch_size=batch_size,
                                                 imgsz=imgsz,
                                                 half=amp,
                                                 model=ema.ema,
