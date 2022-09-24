@@ -4,9 +4,9 @@ weights: "" # type=str, default=ROOT / 'yolov5s.pt', help='initial weights path,
 cfg: C:\projets\yolov7\seg\models\segment\yolov7-seg-jer.yaml # type=str, default='', help='model.yaml path')
 data: C:\projets\yolov7\src_jer\isaid\configs\dataset\dataset.yaml # type=str, default=ROOT / 'data/coco128.yaml', help='dataset.yaml path')
 hyp: C:\projets\yolov7\src_jer\isaid\configs\hyps\hyp.scratch-low-jer.yaml # type=str, default=ROOT / 'data/hyps/hyp.scratch-low.yaml', help='hyperparameters path')
-epochs: 3 # type=int, default=300, help='total training epochs')
+epochs: 300 # type=int, default=300, help='total training epochs')
 batch_size: 2 # type=int, default=16, help='total batch size for all GPUs, -1 for autobatch')
-imgsz: 640 # type=int, default=640, help='train, val image size (pixels)')
+imgsz: 640 # type=int, default=640, help='train, val image size (pixels)') imgsz must be a multilple of max stride 32, updating to 544
 rect: False # action='store_true', help='rectangular training') ## JE PENSE QUE rect == False pour train loader, et par defautl pour val loader == True.. voir dans code
 resume: False # nargs='?', const=True, default=False, help='resume most recent training') DEFAULT=False
 nosave: False # action='store_true', help='only save final checkpoint') DEFAULT=False
