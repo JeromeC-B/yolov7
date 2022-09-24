@@ -9,21 +9,21 @@ test: test
 
 # Classes
 names:
-  1: plane
-  2: ship
-  3: storage_tank
-  4: baseball_diamond
-  5: tennis_court
-  6: basketball_court
-  7: ground_track_field
-  8: harbor
-  9: bridge
-  10: large_vehicle
-  11: small_vehicle
-  12: helicopter
-  13: roundabout
-  14: soccer_ball_field
-  15: swimming_pool
+  0: plane
+  1: ship
+  2: storage_tank
+  3: baseball_diamond
+  4: tennis_court
+  5: basketball_court
+  6: ground_track_field
+  7: harbor
+  8: bridge
+  9: large_vehicle
+  10: small_vehicle
+  11: helicopter
+  12: roundabout
+  13: soccer_ball_field
+  14: swimming_pool
 
 
 # ajout jer
