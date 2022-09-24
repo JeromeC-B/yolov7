@@ -25,7 +25,7 @@ if __name__ == '__main__':
         config = yaml.safe_load(stream)
 
     # ### faire les train/val .txt
-    create_train_val_txt.create_train_val_txt_from_yaml(path_yaml=config["data"])
+    create_train_val_txt.create_train_val_txt_from_yaml(path_data_yaml=config["data"])
 
     train.run(weights=config["weights"],
               cfg=config["cfg"],

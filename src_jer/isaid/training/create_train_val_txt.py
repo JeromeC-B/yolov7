@@ -1,7 +1,6 @@
 
 import yaml
-from os import listdir, remove
-from os.path import isfile, join
+import os
 import numpy as np
 
 
@@ -13,7 +12,7 @@ class KFold:
 
 def get_imgs_name(path_imgs):
 
-    onlyfiles = [f for f in listdir(path_imgs) if isfile(join(path_imgs, f))]
+    onlyfiles = [f for f in os.listdir(path_imgs) if os.path.isfile(os.path.join(path_imgs, f))]
     return onlyfiles
 
 
@@ -26,9 +25,9 @@ def split_train_val(split_ratio, nb_data):
 
 
 def create_txt(rows, imgs_name, name_file, path_imgs):
-    if isfile(name_file):
+    if os.path.isfile(name_file):
         # ### delete le file
-        remove(path=name_file)
+        os.remove(path=name_file)
     with open(name_file, "w") as f:
         for i in range(rows.shape[0]):
             f.write(path_imgs + "/" + imgs_name[rows[i]])
@@ -54,9 +53,16 @@ def create_train_val_txt(split_ratio, train_name, val_name, path_imgs, path_out)
     t = 0
 
 
-def create_train_val_txt_from_yaml(path_yaml):
-    with open(path_yaml, 'r') as stream:
+def create_train_val_txt_from_yaml(path_data_yaml):
+
+    with open(path_data_yaml, 'r') as stream:
         config = yaml.safe_load(stream)
+
+    for filename in ["imgs-train.cache", "imgs-train.cache.npy", "imgs-train.txt", "imgs-val.cache", "imgs-val.cache.npy", "imgs-val.txt"]:
+        path_file = config["path"] + filename
+        if os.path.isfile(path_file):
+            # ### delete le file
+            os.remove(path=path_file)
 
     create_train_val_txt(split_ratio=config["split_ratio"], train_name=config["train"], val_name=config["val"],
                          path_imgs=config["images_folder"], path_out=config["path"])
