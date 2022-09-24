@@ -8,9 +8,8 @@
 from pathlib import Path
 import os
 import shutil
-import copy
 
-import json
+from PIL import Image
 
 
 def get_imgs_names(annots):
@@ -40,18 +39,22 @@ def copy_data(annots, path_in, path_out):
                 shutil.copy(path_imgs_inst_labels, path_out + "/imgs-inst-labels/")
 
 
-def create_str_segm(annot):
+def create_str_segm(annot_list, x_size, y_size):
 
     str_segm = ""
-    for i in range(len(annot["segmentation"][0])):
-        str_segm = str_segm + str(annot["segmentation"][0][i])
-        if i != len(annot["segmentation"][0]) - 1:
+    for i in range(len(annot_list)):
+        if i % 2 == 0:
+            v_scaled = annot_list[i] / x_size
+        else:
+            v_scaled = annot_list[i] / y_size
+        str_segm = str_segm + str(v_scaled)
+        if i != len(annot_list) - 1:
             str_segm = str_segm + " "
 
     return str_segm
 
 
-def create_strs_to_file_inst(annots):
+def create_strings_instance_labels(annots, path_imgs):
     """
     Ne pas oublier la différence entre inst et sem... si c'est inst, alors la même catégorie dans l'image va avoir plusieurs labels...
     du style
@@ -61,39 +64,33 @@ def create_strs_to_file_inst(annots):
     Alors qu'en sem
     12 x0 y0 x1 y1 x2 y2 x0' y0' x1' y1' x2' y2' ....
     """
-    strs_to_file = {}
+    # ### but faire un dict de {filename: string_labels}
+    string_labels = {}
     for annot in annots["annotations"]:
+        filename = annots["images"][annot["image_id"]]["file_name"]
+        x_size, y_size = Image.open(path_imgs + filename).size
+        filename = filename[:-4]
         for i in range(len(annot["segmentation"])):
-            if annot["image_id"] in strs_to_file:
-                strs_to_file[annot["image_id"]] = strs_to_file[annot["image_id"]] + "\n"
+            if annots["images"][annot["image_id"]]["id"] != annot["image_id"]:
+                raise Exception("Pas normal?")
+            if filename in string_labels:
+                string_labels[filename] = string_labels[filename] + "\n"
             else:
-                strs_to_file[annot["image_id"]] = ""
-            str_segm = create_str_segm(annot=annot)
-            strs_to_file[annot["image_id"]] = strs_to_file[annot["image_id"]] + "{} ".format(annot["category_id"]) + str_segm
-    return strs_to_file
+                string_labels[filename] = ""
+            str_segm = create_str_segm(annot_list=annot["segmentation"][i], x_size=x_size, y_size=y_size)
+            string_labels[filename] = string_labels[filename] + "{} ".format(annot["category_id"]) + str_segm
+    return string_labels
 
 
-def write_labels(annots, strs_to_file, path_imgs, path_out):
-    raise Exception("Rendu ici, il faut etre sur que les labels soient 0,0 en haut à gauche, et les pixels normalisés...")
-    filename_to_id = {}
-    for i in range(len(annots["images"])):
-        filename_to_id[annots["images"][i]["file_name"]] = annots["images"][i]["id"]
-    for filename in os.listdir(path_imgs):
-        path_file = path_out + filename[:-4] + ".txt"
+def write_labels(string_labels, path_out):
+    for filename in string_labels:
+        path_file = path_out + filename + ".txt"
         # ### check if img_name.txt exist ###
         if os.path.isfile(path_file):
             # ### delete le file
             os.remove(path=path_file)
-        if filename in filename_to_id:
-            if filename_to_id[filename] in strs_to_file:
-                with open(path_file, "w", encoding="utf-8") as f:
-                    f.write(strs_to_file[filename_to_id[filename]])
-            else:
-                print("filename_ and id", filename, filename_to_id[filename])
-        else:
-            with open(path_file, "w", encoding="utf-8") as f:
-                f.write("")
-            print("filename: ", filename)
+        with open(path_file, "w", encoding="utf-8") as f:
+            f.write(string_labels[filename])
 
 
 def create_labels_in_out_folder(annots, which_seg, path_imgs, path_out):
@@ -101,14 +98,14 @@ def create_labels_in_out_folder(annots, which_seg, path_imgs, path_out):
     Path(path_out).mkdir(parents=True, exist_ok=True)
 
     if which_seg == "inst":
-        strs_to_file = create_strs_to_file_inst(annots=annots)
+        string_labels = create_strings_instance_labels(annots=annots, path_imgs=path_imgs)
     elif which_seg == "sem":
         raise Exception("Pas encore implémenté")
         path_in = path_in + "/train-labels/train/Semantic_masks/images/images"
     else:
         raise Exception("pas normal, c'est soit inst, soit sem, non?")
 
-    write_labels(annots=annots, strs_to_file=strs_to_file, path_imgs=path_imgs, path_out=path_out)
+    write_labels(string_labels=string_labels, path_out=path_out)
 
 
 def move_data_n_labels(annots, which_seg, path_in, path_out):
