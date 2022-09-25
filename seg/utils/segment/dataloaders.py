@@ -165,8 +165,9 @@ class LoadImagesAndLabelsAndMasks(LoadImagesAndLabels):  # for training/testing
                 masks = polygons2masks(img.shape[:2], segments, color=1, downsample_ratio=self.downsample_ratio)
 
         # ### modif par jer ###
-        if masks.dtype == np.uint16:
-            masks = masks.astype(np.uint8)
+        if not isinstance(masks, list):
+            if masks.dtype == np.uint16:
+                masks = masks.astype(np.uint8)
         # ### modif par jer ###
 
         masks = (torch.from_numpy(masks) if len(masks) else torch.zeros(1 if self.overlap else nl, img.shape[0] //

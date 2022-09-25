@@ -155,7 +155,7 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
 
     # Optimizer
     print("Changement de nbs ici de 64 à X")
-    nbs = 32  # nominal batch size  DEFAULT=64
+    nbs = 8  # nominal batch size  DEFAULT=64
     accumulate = max(round(nbs / batch_size), 1)  # accumulate loss before optimizing
     hyp['weight_decay'] *= batch_size * accumulate / nbs  # scale weight_decay
     optimizer = smart_optimizer(model, opt.optimizer, hyp['lr0'], hyp['momentum'], hyp['weight_decay'])
