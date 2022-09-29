@@ -27,7 +27,7 @@ project: C:\projets\external\database\isaid\data-2022-09-21\scratch\ # default=R
 name: exp # default='exp', help='save to project/name')
 exist_ok: False # action='store_true', help='existing project/name ok, do not increment') DEFAULT=False
 quad: False # action='store_true', help='quad dataloader') DEFAULT=False
-cos_lr: False # action='store_true', help='cosine LR scheduler') DEFAULT=False (VENIR JOUER AVEC CELA??)
+cos_lr: True # action='store_true', help='cosine LR scheduler') DEFAULT=False (VENIR JOUER AVEC CELA??)
 label_smoothing: 0.0 # type=float, default=0.0, help='Label smoothing epsilon')
 patience: 500 # type=int, default=100, help='EarlyStopping patience (epochs without improvement)')
 # ### 24 == toutes les layers sauf la dernière convolution (après la dernière layer...)
