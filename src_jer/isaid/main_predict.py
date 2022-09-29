@@ -50,6 +50,7 @@ if __name__ == '__main__':
                 half=config["half"],
                 dnn=config["dnn"])
 
+    #                 ast.literal_eval(config["imgsz"]),
     print('\n')
     print("temps d'exécution: ", datetime.timedelta(seconds=time.time() - time_debut))
     print("heure: ", datetime.datetime.now())
