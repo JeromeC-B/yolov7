@@ -127,6 +127,7 @@ class LoadImagesAndLabelsAndMasks(LoadImagesAndLabels):  # for training/testing
             labels = self.labels[index].copy()
             # [array, array, ....], array.shape=(num_points, 2), xyxyxyxy
             segments = self.segments[index].copy()
+            # print("Ici, pendant val! (Et avec labels et segments...)")
             if len(segments):
                 for i_s in range(len(segments)):
                     segments[i_s] = xyn2xy(
