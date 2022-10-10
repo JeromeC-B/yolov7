@@ -678,6 +678,7 @@ class LoadImagesAndLabels(Dataset):
             else:  # read image
                 im = cv2.imread(f)  # BGR
                 assert im is not None, f'Image Not Found {f}'
+            # print("Ça serait ici qu'il faut dire quon veut prendre une patch?")
             h0, w0 = im.shape[:2]  # orig hw
             r = self.img_size / max(h0, w0)  # ratio
             if r != 1:  # if sizes are not equal
